@@ -1,0 +1,25 @@
+# 1. Віртуальні середовища
+venv/
+env/
+.venv/
+
+# 2. Системний кеш Python 
+__pycache__/
+*.pyc
+*.pyo
+
+# 3. Кеш та тимчасові файли Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 4. Кеш та звіти Playwright 
+test-results/
+playwright-report/
+playwright/.cache/
+
+# 5. Системне сміття
+Thumbs.db
+
+# 6. Файли з секретами, паролями чи локальними налаштуваннями
+.env
