@@ -25,9 +25,13 @@ Measuring the execution time (via the `timeit` module) of two different mathemat
 for calculating currency rates. 
 Demonstrates the difference between a mathematical approach and using the remainder of a division.
 
-### 🎭 3. Playwright Automation (`/playwright`) - *In progress* 🚧
-Scripts for browser automation and end-to-end testing.
-* ===================
+### 🎭 3. Playwright Automation (`/vis_mon_system`) 
+* **Visual Content Integrity Monitoring System**
+It automatically parses objects on a page, generates their unique hashes, and stores them in a relational database. This allows you to detect visual changes on a site in one click, which is an important part of visual regression testing.
+
+Still in the process 🚧 :
+* debugged logging
+* writing tests that would process the received data and compare it with the benchmark
 
 ### 🛠️ 4. Other experiments (`/misc`)
 Various scripts, solving algorithmic problems, and other interesting things that I threw here while studying.

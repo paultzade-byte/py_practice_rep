@@ -23,3 +23,12 @@ Thumbs.db
 
 # 6. Файли з секретами, паролями чи локальними налаштуваннями
 .env
+
+# 7. data bases trashe
+*.sqlite3-journal
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.db-journal
+*.db-wal
+*.db-shm
