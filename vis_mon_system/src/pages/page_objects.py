@@ -1,10 +1,6 @@
 # src/pages/page_objects.py
-# клас логіна містить всі функції, що стосуються 
-# відкриття сторінки логіна, заповнення полів username та password
-# та відправки credentials кнопкою submit 
 
 class LoginPage:
-    # приклад ініт зі стандартними даними для тесту сторінки
     def __init__(self, page):
         self.page = page
         self.name_input = page.locator("input[name='user-name']")
@@ -31,6 +27,7 @@ class ProductPage:
         self.page = page
         self.product_header = page.locator(".title")
         self.main_menu_btn = page.locator(".bm-burger-button")
+        self.img_locators = page.locator(".inventory_item")
 
         # seeking for product card by text inside of container
         self.backpack_item = page.locator(".inventory_item").filter(has_text="Sauce Labs Backpack")
@@ -40,3 +37,6 @@ class ProductPage:
 
     def open_menu(self):
         return self.main_menu_btn.click()
+
+    def get_prod_count(self):
+        return self.img_locators.count()

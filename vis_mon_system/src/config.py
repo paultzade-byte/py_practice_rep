@@ -21,3 +21,4 @@ class Config:
 	user_name = os.getenv("user_name")
 	user_password = os.getenv("user_password")
 	DB_PATH = os.getenv("DB_PATH")
+	IMG_DIR = base_dir/os.getenv("IMG_DIR")

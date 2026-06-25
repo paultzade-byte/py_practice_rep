@@ -1,4 +1,5 @@
 # src/database/db_manager.py
+
 import sqlite3
 
 class ImageRepository:
@@ -77,25 +78,42 @@ class ImageRepository:
 
         return meta_id
 
-    def get_last_hash(self, file_name):
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.cursor()
-            query = """
-            SELECT FILE_NAME, FILE_HASH 
-            FROM IH_META 
-            WHERE FILE_NAME = ?
-            """
-            cursor.execute(query, (file_name,))
-            return cursor.fetchone()
+class ImageRepGetData:
+    def __init__(self, db_path):
+        self.db_path = db_path
+        self.conn = sqlite3.connect(db_path)
+        # (before cursor)row factory returns each row in immutable dictionary format ("collumn_name": "value")
+        self.conn.row_factory = sqlite3.Row
+        self.cursor = self.conn.cursor()
 
-    def get_last_blob(self, file_name):
-        with sqlite3.connect(self.db_path) as conn:
-            cursor = conn.cursor()
-            query = """
-            SELECT M.FILE_NAME, C.FILE_DATA 
-            FROM IH_META M 
-            INNER JOIN IH_CONTENT C ON C.FILE_ID = M.ID 
-            WHERE M.FILE_NAME = ?
-            """
-            cursor.execute(query, (file_name,))
-            return cursor.fetchone()
+    def get_hash(self, file_name, img_uuid):
+        query = """
+        SELECT FILE_NAME, FILE_HASH 
+        FROM IH_META 
+        WHERE FILE_NAME = ? AND IMG_UUID = ?
+        """
+        self.cursor.execute(query, (file_name, img_uuid))
+        return self.cursor.fetchone()
+
+    def get_blob(self, file_name, img_uuid):
+        query = """
+        SELECT M.FILE_NAME, C.FILE_DATA 
+        FROM IH_META M 
+        INNER JOIN IH_CONTENT C ON C.FILE_IH_META_ID = M.ID 
+        WHERE M.FILE_NAME = ? AND M.IMG_UUID = ?
+        """
+        self.cursor.execute(query, (file_name, img_uuid))
+        return self.cursor.fetchone()
+
+    def get_base64(self, file_name, img_uuid):
+        query = """
+        SELECT M.FILE_NAME, C.FILE_B64_DATA 
+        FROM IH_META M 
+        INNER JOIN IH_CONTENT C ON C.FILE_IH_META_ID = M.ID
+        WHERE M.FILE_NAME = ? AND M.IMG_UUID = ?
+        """
+        self.cursor.execute(query, (file_name, img_uuid))
+        return self.cursor.fetchone()
+
+    def close(self):
+        self.conn.close()
