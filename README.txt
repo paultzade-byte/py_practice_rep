@@ -33,7 +33,12 @@ Still in the process 🚧 :
 * debugged logging
 * writing tests that would process the received data and compare it with the benchmark
 
-### 🛠️ 4. Other experiments (`/misc`)
+### 🇺🇦 4. EDRPOU & IPN Generator (`/edrpou_rnokpp_generator`)
+* **Ukrainian Mock Data Utility**
+A Python tool with a Tkinter GUI for generating and validating 8-digit EDRPOU codes and IPNs according to Ukrainian state standards. Useful for QA engineers and developers who need to quickly create valid test data for local systems. 
+*(For detailed mathematical algorithms and check-digit logic, see the README inside this folder).*
+
+### 🛠️ 5. Other experiments (`/misc`)
 Various scripts, solving algorithmic problems, and other interesting things that I threw here while studying.
 
 📬 Contact me
