@@ -62,7 +62,6 @@ class IpnEdrpouGeneratorApp:
 
         if self.var_edrpou.get():
             try:
-                # currently not return data because generator create 200 units and records into txt
                 edrpou = generate_edrpou() 
                 result += f"{edrpou}\n"
 
