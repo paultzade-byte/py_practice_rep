@@ -81,8 +81,14 @@ def run():
                     }
 
                 # 7. recording data to the DB
-                db_manager.save_image(data=db_data)
+                save_result = db_manager.save_image(data=db_data)
                 
+                # immediate feedback
+                if save_result:
+                    print(f"    - DB Status : Saved successfully (DB ID: {save_result})")
+                else:
+                    print(f"    - DB Status : [!] FAILED to save in Database")
+                 
         finally:
             # 8. closing browser
             print("\n === FINISH SESSION === ")

@@ -32,3 +32,8 @@ Thumbs.db
 *.db-journal
 *.db-wal
 *.db-shm
+
+# 8. another trash
+pytest/
+generated/
+test_validation.py

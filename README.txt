@@ -28,15 +28,17 @@ Demonstrates the difference between a mathematical approach and using the remain
 ### 🎭 3. Playwright Automation (`/vis_mon_system`) 
 * **Visual Content Integrity Monitoring System**
 It automatically parses objects on a page, generates their unique hashes, and stores them in a relational database. This allows you to detect visual changes on a site in one click, which is an important part of visual regression testing.
-
-Still in the process 🚧 :
-* debugged logging
-* writing tests that would process the received data and compare it with the benchmark
+Link for the used page https://www.saucedemo.com/
 
 ### 🇺🇦 4. EDRPOU & IPN Generator (`/edrpou_rnokpp_generator`)
 * **Ukrainian Mock Data Utility**
 A Python tool with a Tkinter GUI for generating and validating 8-digit EDRPOU codes and IPNs according to Ukrainian state standards. Useful for QA engineers and developers who need to quickly create valid test data for local systems. 
 *(For detailed mathematical algorithms and check-digit logic, see the README inside this folder).*
+
+### API 5. REQUESTS (`/requests`)
+* **Practical sprint with API lib `requests`
+
+Link for the used resource https://restful-booker.herokuapp.com/ 
 
 ### 🛠️ 5. Other experiments (`/misc`)
 Various scripts, solving algorithmic problems, and other interesting things that I threw here while studying.
