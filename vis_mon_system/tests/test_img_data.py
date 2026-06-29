@@ -32,16 +32,21 @@ def ctx():
 	db.close()
 
 # tests section
-def test_blob(ctx):
+def test_blob(ctx: ImgTestContext):
 	row_fetched  = ctx.db.get_blob(ctx.file_name, ctx.img_uuid)
-	assert row_fetched["FILE_DATA"] == ctx.local_binary_img_data
+	assert row_fetched is not None
+	assert row_fetched.file_data == ctx.local_binary_img_data
 
-def test_hash(ctx):
+def test_hash(ctx: ImgTestContext):
 	row_fetched = ctx.db.get_hash(ctx.file_name, ctx.img_uuid)
-	local_hash = hashlib.md5(ctx.local_binary_img_data).hexdigest()
-	assert row_fetched["FILE_HASH"] == local_hash
+	assert row_fetched is not None
+	assert row_fetched.file_hash == hashlib.md5(ctx.local_binary_img_data).hexdigest() #local_hash
 
-def test_base64(ctx):
+def test_base64(ctx: ImgTestContext):
 	row_fetched = ctx.db.get_base64(ctx.file_name, ctx.img_uuid)
-	local_base64 = base64.b64encode(ctx.local_binary_img_data).decode('utf-8')
-	assert row_fetched["FILE_B64_DATA"] == local_base64
+	assert row_fetched is not None
+	assert row_fetched.file_base64_data == base64.b64encode(ctx.local_binary_img_data).decode('utf-8')
+
+#def test_broke_my_tset(ctx):
+#	row_fetched = [1,2]
+#	assert len(row_fetched) == 3

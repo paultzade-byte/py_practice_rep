@@ -5,7 +5,8 @@ import time
 from datetime import datetime
 
 class ImageScanner:
-    def get_image_data(self, page, image_ids: tuple) -> dict:
+    @staticmethod
+    def get_image_data(page, image_ids: tuple) -> dict:
         """
         Takes the active page object and an ID tuple. 
         Returns a dictionary with image data
@@ -45,7 +46,7 @@ class ImageScanner:
                         "response_time_ms": response_time_ms,
                         "executed_at": executed_at,
                         "error_msg": f"HTTP Error {status_code}",
-                        "html_img_id": {img_id}
+                        "html_img_id": img_id
                     }
                     continue
 
@@ -77,7 +78,7 @@ class ImageScanner:
                     "response_time_ms": 0,
                     "executed_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     "error_msg": str(e),  # we don't need to crash whole test even if one image downloading will fail   
-                    "html_img_id": {img_id}
+                    "html_img_id": img_id
                     }
 
         return results

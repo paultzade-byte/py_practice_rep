@@ -23,6 +23,8 @@ def run():
             # 2. initialize the page and authorization
             login_page = LoginPage(page)
 
+            #breakpoint()
+
             print(f"GOING TO THE PAGE : {Config.base_url}")
             login_page.open(Config.base_url)
             print(f"USER AUTHORIZATION : {Config.user_name}")

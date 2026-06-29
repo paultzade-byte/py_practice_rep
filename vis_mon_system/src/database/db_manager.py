@@ -1,9 +1,25 @@
 # src/database/db_manager.py
 
 import sqlite3
+from dataclasses import dataclass
+from typing import Any
 
+# next 11 rows allow us to write received data into variables and convey this variables to test modules
+@dataclass
+class Base64Result:
+    file_base64_data: str
+
+@dataclass
+class HashResult:
+    file_hash: str
+
+@dataclass
+class BlobResult:
+    file_data: bytes
+
+# write data into db
 class ImageRepository:
-    def __init__(self, db_path):
+    def __init__(self, db_path: str) -> None:
         self.db_path = db_path
         self._init_db()
         # in case DB is a server 
@@ -11,11 +27,11 @@ class ImageRepository:
         # self.conn = sqlite3.connect(db_path)
         # self.cursor = self.conn.cursor()
 
-    def _init_db(self):
+    def _init_db(self) -> None:
         # CREATE TABLE IF NOT EXIST...
         pass
 
-    def save_image(self, data):
+    def save_image(self, data: dict[str, Any]) -> int | bool:
         """Saving the image data. data – is dictionary with parameters"""
         
         # unpacking the 'data' dictionary, it helps to avoid crashes in case of empty values
@@ -46,6 +62,9 @@ class ImageRepository:
 
                 #get id from the last record
                 meta_id = cursor.lastrowid
+                if meta_id is None:
+                    conn.rollback()
+                    return False       
 
                 # [2] content table record
                 query_ih_content = """
@@ -78,24 +97,29 @@ class ImageRepository:
 
         return meta_id
 
+# read data from db
 class ImageRepGetData:
-    def __init__(self, db_path):
+    def __init__(self, db_path: str) -> None:
         self.db_path = db_path
         self.conn = sqlite3.connect(db_path)
         # (before cursor)row factory returns each row in immutable dictionary format ("collumn_name": "value")
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
 
-    def get_hash(self, file_name, img_uuid):
+    def get_hash(self, file_name: str, img_uuid: str) -> HashResult | None:
         query = """
         SELECT FILE_NAME, FILE_HASH 
         FROM IH_META 
         WHERE FILE_NAME = ? AND IMG_UUID = ?
         """
         self.cursor.execute(query, (file_name, img_uuid))
-        return self.cursor.fetchone()
+        row = self.cursor.fetchone()
 
-    def get_blob(self, file_name, img_uuid):
+        if row:
+            return HashResult(file_hash=row["FILE_HASH"])
+        return None
+
+    def get_blob(self, file_name: str, img_uuid: str) -> BlobResult | None:
         query = """
         SELECT M.FILE_NAME, C.FILE_DATA 
         FROM IH_META M 
@@ -103,9 +127,13 @@ class ImageRepGetData:
         WHERE M.FILE_NAME = ? AND M.IMG_UUID = ?
         """
         self.cursor.execute(query, (file_name, img_uuid))
-        return self.cursor.fetchone()
+        row = self.cursor.fetchone()
 
-    def get_base64(self, file_name, img_uuid):
+        if row:
+            return BlobResult(file_data=row["FILE_DATA"])
+        return None
+
+    def get_base64(self, file_name: str, img_uuid: str) -> Base64Result | None:
         query = """
         SELECT M.FILE_NAME, C.FILE_B64_DATA 
         FROM IH_META M 
@@ -113,7 +141,11 @@ class ImageRepGetData:
         WHERE M.FILE_NAME = ? AND M.IMG_UUID = ?
         """
         self.cursor.execute(query, (file_name, img_uuid))
-        return self.cursor.fetchone()
+        row = self.cursor.fetchone()
 
-    def close(self):
+        if row:
+            return Base64Result(file_base64_data=row["FILE_B64_DATA"])
+        return None
+
+    def close(self) -> None:
         self.conn.close()
