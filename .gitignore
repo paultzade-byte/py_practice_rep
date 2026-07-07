@@ -37,3 +37,6 @@ Thumbs.db
 pytest/
 generated/
 test_validation.py
+pstruct.txt
+.mypy_cache/
+.idea/
