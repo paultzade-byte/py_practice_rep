@@ -36,9 +36,18 @@ A Python tool with a Tkinter GUI for generating and validating 8-digit EDRPOU co
 *(For detailed mathematical algorithms and check-digit logic, see the README inside this folder).*
 
 ### API 5. REQUESTS (`/requests`)
-* **Practical sprint with API lib `requests`
-
+* **Practical sprint focused on REST API testing using the requests library and the Restful-booker training service.
+Features:
+Automated CRUD tests for the Booking entity. 
+Authentication using access tokens in request headers and cookies. 
+Validation of HTTP status codes, response headers, and JSON data. 
+Reusable base API client to separate request logic from test cases. 
+Clean and maintainable test structure following basic API testing practices
 Link for the used resource https://restful-booker.herokuapp.com/ 
+
+
+
+
 
 ### 🛠️ 5. Other experiments (`/misc`)
 Various scripts, solving algorithmic problems, and other interesting things that I threw here while studying.
