@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 
+# attention! "overkill"
 @dataclass(frozen=True)
 class Endpoints:
 	AUTH: str = "/auth"

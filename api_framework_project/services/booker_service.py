@@ -31,3 +31,10 @@ class BookerServices:
 
 		return BookingModel.model_validate(response.json())
 
+	def delete_booking(self, booking_id: int, token: str):
+		# specific restful-booker header
+		headers = {
+			"Cookie": f"token={token}"
+		}
+		response = self.client.delete(f"booking/{booking_id}", headers=headers)
+		return response
