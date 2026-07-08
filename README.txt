@@ -45,11 +45,7 @@ Reusable base API client to separate request logic from test cases.
 Clean and maintainable test structure following basic API testing practices
 Link for the used resource https://restful-booker.herokuapp.com/ 
 
-
-
-
-
-### 🛠️ 5. Other experiments (`/misc`)
+### 🛠️ 6. Other experiments (`/misc`)
 Various scripts, solving algorithmic problems, and other interesting things that I threw here while studying.
 
 📬 Contact me
