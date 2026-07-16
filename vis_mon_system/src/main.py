@@ -7,6 +7,23 @@ from core.scanner import ImageScanner
 from pages.page_objects import LoginPage, ProductPage
 from database.db_manager import ImageRepository
 
+import logging
+from pathlib import Path
+from datetime import datetime
+
+Path("logs").mkdir(exist_ok=True)
+
+log_file = Path("logs")/f"vis_mon_system_log_{datetime.now():%Y-%m-%d_%H-%M-%S}.log"
+
+logging.basicConfig(
+    handlers=[
+                logging.FileHandler(log_file, encoding="utf-8"),
+                logging.StreamHandler()
+                ],
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s: %(message)s',
+    )
+
 # uuid gen
 current_test_session = str(uuid.uuid4())
 
@@ -17,50 +34,48 @@ def run():
         context = browser.new_context()
         page = context.new_page()
 
-        print(f"=== SESSION START : {current_test_session} ===")
-
+        logging.info(f"=== SESSION START : {current_test_session} ===")
         try: 
             # 2. initialize the page and authorization
             login_page = LoginPage(page)
 
             #breakpoint()
 
-            print(f"GOING TO THE PAGE : {Config.base_url}")
+            logging.info(f"GOING TO THE PAGE : {Config.base_url}")
             login_page.open(Config.base_url)
-            print(f"USER AUTHORIZATION : {Config.user_name}")
+            logging.info(f"USER AUTHORIZATION : {Config.user_name}")
             login_page.login(Config.user_name, Config.user_password)
 
             # 3. get header_title to assert login success
             products_page = ProductPage(page)
             header_title = products_page.get_header_text()
-            print(f"LOGIN SUCCESSFUL. Header title : {header_title}")
+            logging.info(f"LOGIN SUCCESSFUL. Header title : {header_title}")
 
             # 4. scanning images
             # stub id's list
             target_image_ids = ("item_4_img_link", "item_0_img_link", "item_1_img_link")
-            
-            print(f" Scanning images by id list...")
+
+            logging.info(f" Scanning images by id list...")
             scanner = ImageScanner()
             scanned_results = scanner.get_image_data(page, target_image_ids)
 
             # 5. handling and print scanning results + DB data recording
 
-            print("\n === SCANNING RESULTS === ")
-
+            logging.info(" === SCANNING RESULTS === ")
             db_manager = ImageRepository(Config.DB_PATH)
 
             for img_id, img_data in scanned_results.items():
                 
                 # log section
-                print(f"\n Element with ID : {img_id}")
-                print(f"    - Name : {img_data['file_name']}")
-                print(f"    - HTTP status : {img_data['status']}")
-                print(f"    - Response time : {img_data['response_time_ms']} ms")
+                logging.info(f" Element with ID : {img_id}")
+                logging.info(f"    - Name : {img_data['file_name']}")
+                logging.info(f"    - HTTP status : {img_data['status']}")
+                logging.info(f"    - Response time : {img_data['response_time_ms']} ms")
 
                 if img_data['error_msg']:
-                    print(f"    - Error : {img_data['error_msg']}")
+                    logging.info(f"    - Error : {img_data['error_msg']}")
                 else:
-                    print(f"    - MD5 image hash : {img_data['hash']}")
+                    logging.info(f"    - MD5 image hash : {img_data['hash']}")
                 
                 # creating unique record id for each img
                 unique_img_db_id = str(uuid.uuid4())
@@ -85,13 +100,13 @@ def run():
                 
                 # immediate feedback
                 if save_result:
-                    print(f"    - DB Status : Saved successfully (DB ID: {save_result})")
+                    logging.info(f"    - DB Status : Saved successfully (DB ID: {save_result})")
                 else:
-                    print(f"    - DB Status : [!] FAILED to save in Database")
+                    logging.info(f"    - DB Status : [!] FAILED to save in Database")
                  
         finally:
             # 8. closing browser
-            print("\n === FINISH SESSION === ")
+            logging.info(" === FINISH SESSION === ")
             browser.close()
 
 if __name__ == "__main__":

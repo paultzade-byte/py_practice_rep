@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
  
-# __file__ is the path for current file
+# __file__ is the path to current file
 # .parent is src folder
 # .parent.parent is the project root (vis_mon_system) 
 base_dir = Path(__file__).resolve().parent.parent
@@ -12,7 +12,7 @@ base_dir = Path(__file__).resolve().parent.parent
 #path to .env
 env_file_path = base_dir/".env"
 
-# loading variables from the .env
+# loading variables from .env
 load_dotenv(dotenv_path=env_file_path)
 
 # get variables

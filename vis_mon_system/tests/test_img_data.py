@@ -1,7 +1,6 @@
 # tests/test_img_data.py
 import os
 import pytest
-import sqlite3
 import hashlib
 import base64
 from dataclasses import dataclass
@@ -47,6 +46,3 @@ def test_base64(ctx: ImgTestContext):
 	assert row_fetched is not None
 	assert row_fetched.file_base64_data == base64.b64encode(ctx.local_binary_img_data).decode('utf-8')
 
-#def test_broke_my_tset(ctx):
-#	row_fetched = [1,2]
-#	assert len(row_fetched) == 3

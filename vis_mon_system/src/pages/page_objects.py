@@ -1,4 +1,6 @@
 # src/pages/page_objects.py
+from pytest_playwright.pytest_playwright import page
+
 
 class LoginPage:
     def __init__(self, page):
@@ -36,7 +38,73 @@ class ProductPage:
         return self.product_header.text_content()
 
     def open_menu(self):
-        return self.main_menu_btn.click()
+        self.main_menu_btn.click()
+        return ProductPage(self.page)
 
     def get_prod_count(self):
         return self.img_locators.count()
+
+
+class Cart:
+    def __init__(self, page):
+        self.page = page
+        self.add_to_cart_btn = page.locator(".btn_inventory")
+        self.open_cart_button = page.locator(".shopping_cart_link")
+        self.checkout_button = page.locator(".checkout_button")
+        self.first_name = page.locator("#first-name")
+        self.last_name = page.locator("#last-name")
+        self.postal_code = page.locator("#postal-code")
+        self.continue_button = page.locator("#continue")
+
+        self.inventory_price = page.locator(".inventory_item_price")
+
+        self.subtotal_label = page.locator(".summary_subtotal_label")
+        self.total_label = page.locator(".summary_total_label")
+        self.tax_label = page.locator(".summary_tax_label")
+
+    def add_to_cart_first_n_products(self, count):
+        expected_total = 0.0
+        for i in range(count):
+            self.add_to_cart_btn.nth(i).click()
+            # Витягуємо текст
+            price_text = self.inventory_price.nth(i).inner_text()
+            price_value = float(price_text.replace("$", ""))
+            expected_total += price_value
+        return expected_total
+
+    def open_cart(self):
+        self.open_cart_button.click()
+        return self
+
+    def checkout_start(self):
+        self.checkout_button.click()
+        return self
+
+    def user_data_fill(self):
+        self.first_name.fill("Dohn")
+        self.last_name.fill("Joe")
+        self.postal_code.fill("10999")
+        self.continue_button.click()
+        return self
+
+    def get_subtotal(self):
+        text = self.subtotal_label.inner_text()
+        return float(text.split("$")[1])
+
+    def get_tax_amount(self):
+        text = self.tax_label.inner_text()
+        return float(text.split("$")[1])
+
+    def get_final_total(self):
+        text = self.total_label.inner_text()
+        return float(text.split("$")[1])
+
+class NeverPage:
+    def __init__(self, page):
+        self.page = page
+        self.response = None
+
+        # opening the wrong page
+    def open_wrong_page(self, url):
+        self.response = self.page.goto(f"{url}v1")
+        return self.response

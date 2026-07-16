@@ -27,8 +27,10 @@ Demonstrates the difference between a mathematical approach and using the remain
 
 ### 🎭 3. Playwright Automation (`/vis_mon_system`) 
 * **Visual Content Integrity Monitoring System**
-It automatically parses objects on a page, generates their unique hashes, and stores them in a relational database. This allows you to detect visual changes on a site in one click, which is an important part of visual regression testing.
 Link for the used page https://www.saucedemo.com/
+This project began as a proof of concept for image validation using SauceDemo. Tests compare locally stored images with the images served by the application by converting both into binary data, Base64 strings, and SHA-256 hashes, ensuring their integrity through value comparison.
+
+The repository is being expanded into a complete UI automation suite, including negative login tests and Page Object scenarios covering shopping cart functionality and regression checks for intentionally broken application behavior.
 
 ### 🇺🇦 4. EDRPOU & IPN Generator (`/edrpou_rnokpp_generator`)
 * **Ukrainian Mock Data Utility**

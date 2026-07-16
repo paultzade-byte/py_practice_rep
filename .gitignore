@@ -40,3 +40,9 @@ test_validation.py
 pstruct.txt
 .mypy_cache/
 .idea/
+.ignore_notes/
+logs/
+vis_mon_system/logs/
+
+# 9. Temporary ignorance
+layout_dev_project/
