@@ -1,14 +1,12 @@
 # src/main.py
 
-# This module purpose is to
-
 import uuid
 from playwright.sync_api import sync_playwright 
-from config import Config
-from core.comparator import ImageComparator
-from core.scanner import ImageScanner
-from pages.page_objects import LoginPage, ProductPage
-from database.db_manager import ImageRepository, ImageRepGetData
+from src.config import Config
+from src.core.comparator import ImageComparator
+from src.core.scanner import ImageScanner
+from src.pages.page_objects import LoginPage, ProductPage
+from src.database.db_manager import ImageRepository, ImageRepGetData
 
 import logging
 from pathlib import Path
@@ -107,7 +105,7 @@ def run():
                          "    - Comparison: current ims scan is the first one"
                      )
                 else:
-                    result = comparator.compare(img_data['blob', previous_blob])
+                    result = comparator.compare(img_data['blob'], previous_blob)
                     logging.info(f"    - Comparison: drift={result.drift_detected} (distance={result.visual_hamming_distance})")
 
                 # 7. recording data to the DB

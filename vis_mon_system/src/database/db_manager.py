@@ -29,7 +29,7 @@ class ImageRepository:
         # self.cursor = self.conn.cursor()
 
     def _init_db(self) -> None:
-        schema_path = Path(__file__)/"scehma.sql"
+        schema_path = Path(__file__).parent / "schema.sql"
         with sqlite3.connect(self.db_path) as conn:
             conn.execute("PRAGMA foreign_keys = ON;")
             conn.executescript(schema_path.read_text())

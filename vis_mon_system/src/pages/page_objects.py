@@ -1,5 +1,4 @@
 # src/pages/page_objects.py
-from pytest_playwright.pytest_playwright import page
 
 
 class LoginPage:
@@ -23,6 +22,7 @@ class LoginPage:
     # for case with error
     def get_error_text(self):
         return self.error_msg.text_content()
+
 
 class ProductPage:
     def __init__ (self, page):
@@ -98,6 +98,7 @@ class Cart:
     def get_final_total(self):
         text = self.total_label.inner_text()
         return float(text.split("$")[1])
+
 
 class NeverPage:
     def __init__(self, page):

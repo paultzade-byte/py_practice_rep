@@ -77,9 +77,9 @@ def test_base64(ctx: ImgTestContext):
 	assert row_fetched.file_base64_data == base64.b64encode(ctx.local_binary_img_data).decode('utf-8')
 
 # edge cases
-def test_get_blab_returns_none_for_unknown_uuid(ctx: ImgTestContext):
+def test_get_blob_returns_none_for_unknown_uuid(ctx: ImgTestContext):
 	"""Reading an unknown record shouldn't fall but silently return None"""
-	row = ctx.reader.get_blob(ctx.file_name, str(uuid.uuid4()))
+	row = ctx.db.get_blob(ctx.file_name, str(uuid.uuid4()))
 	assert row is None
 
 def test_save_image_rejects_duslicate_uuid(ctx: ImgTestContext,tmp_path):
