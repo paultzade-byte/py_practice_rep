@@ -33,7 +33,7 @@ class ImageComparator:
         # imagehash/numpy returns numpy.int64 and numpy.bool_
         # cast to regular Python types so that `is True`/`is False` and serialization
         # (e.g. to a database or JSON) are performed predictably.
-        distance = int(self._phash(current_bytes)) - self._phash(previous_bytes)
+        distance = int(self._phash(current_bytes) - self._phash(previous_bytes))
 
         return ComparisonResult(
             md5_changed=md5_changed,
