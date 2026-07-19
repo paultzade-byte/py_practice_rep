@@ -3,6 +3,7 @@
 import sqlite3
 from dataclasses import dataclass
 from typing import Any
+from pathlib import Path
 
 # next 11 rows allow us to write received data into variables and convey this variables to test modules
 @dataclass
@@ -28,13 +29,15 @@ class ImageRepository:
         # self.cursor = self.conn.cursor()
 
     def _init_db(self) -> None:
-        # CREATE TABLE IF NOT EXIST...
-        pass
+        schema_path = Path(__file__)/"scehma.sql"
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute("PRAGMA foreign_keys = ON;")
+            conn.executescript(schema_path.read_text())
 
     def save_image(self, data: dict[str, Any]) -> int | bool:
         """Saving the image data. data – is dictionary with parameters"""
         
-        # unpacking the 'data' dictionary, it helps to avoid crashes in case of empty values
+        # unpacking the 'data' dictionary
         test_id = data.get('test_id')
         file_name = data.get('file_name')
         file_hash = data.get('file_hash')
@@ -46,6 +49,18 @@ class ImageRepository:
         executed_at = data.get('executed_at')
         error_msg = data.get('error_msg')
         img_uuid = data.get('img_uuid')
+
+        # fast cheknig for None values
+        required = {
+            'test_id': test_id,
+            'file_name': file_name,
+            'file_hash': file_hash,
+            'file_data': file_data,
+            'file_base64_data': file_base64_data
+        }
+        missing = [key for key, value in required.items() if value is None]
+        if missing:
+            raise ValueError(f"Missing requirel fields: {missing}")
 
         with sqlite3.connect(self.db_path) as conn:
             conn.execute("PRAGMA foreign_keys = ON;")
@@ -146,6 +161,17 @@ class ImageRepGetData:
         if row:
             return Base64Result(file_base64_data=row["FILE_B64_DATA"])
         return None
+
+    def get_latest_blob_by_filename(self, file_name: str):
+        query = """
+                SELECT ih_content.FILE_DATA
+                FROM ih_meta
+                JOIN ih_content ON ih_content.FILE_IH_META_ID = ih_meta.ID
+                WHERE ih_meta.FILE_NAME = ?
+                ORDER BY ih_meta.ID DESC LIMIT 1 \
+                """
+        row = self.conn.execute(query, (file_name,)).fetchone()
+        return row[0] if row else None
 
     def close(self) -> None:
         self.conn.close()
